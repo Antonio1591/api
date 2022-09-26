@@ -10,9 +10,9 @@ namespace api.Services
 
         Task<Pessoa> Pessoa(int Id);
 
-        Task<Pessoa> Create(Pessoa book);
+        Task<Pessoa> Create(Pessoa pessoa);
 
-        Task Update(Pessoa book);
+        Task Update(Pessoa pessoa);
 
         Task Delete(int Id);
     }
