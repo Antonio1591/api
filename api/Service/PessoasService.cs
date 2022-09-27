@@ -1,5 +1,4 @@
 ﻿using api.Data;
-using api.Migrations;
 using api.Model;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

@@ -15,6 +15,7 @@ using api.Data;
 using Microsoft.EntityFrameworkCore;
 using api.Model;
 using api.Services;
+using api.Service;
 
 namespace api
 {
@@ -36,7 +37,7 @@ namespace api
 
             services.AddDbContext<DataContext>(opt => opt.UseMySql(stringDeConexao, ServerVersion.AutoDetect(stringDeConexao)));
             services.AddTransient<IPessoa, PessoasService>();
-            services.AddTransient<AnimaisService>();
+            services.AddTransient<IAnimaisServices, AnimaisService>();
             services.AddTransient<PetShopService>();
             services.AddTransient<Pessoa>();
             //services.AddScoped<IPessoa, Pessoa>();

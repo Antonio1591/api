@@ -1,5 +1,4 @@
-﻿using api.Migrations;
-using api.Model;
+﻿using api.Model;
 using api.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
