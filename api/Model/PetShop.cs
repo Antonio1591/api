@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.Model
 {
@@ -14,5 +15,7 @@ namespace api.Model
         public string SituacaoAnimal { get; set; }
         [Required]
         public DateTime DataEntrada { get; set; }
+        [Required]
+        public decimal Valor { get; set; }
     }
 }
