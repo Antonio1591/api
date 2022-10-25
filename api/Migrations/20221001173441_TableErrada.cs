@@ -2,7 +2,7 @@
 
 namespace api.Migrations
 {
-    public partial class tablea : Migration
+    public partial class TableErrada : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

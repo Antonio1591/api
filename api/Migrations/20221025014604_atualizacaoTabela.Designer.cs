@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
 namespace api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221025014604_atualizacaoTabela")]
+    partial class atualizacaoTabela
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,7 +72,7 @@ namespace api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("Cidade")
+                    b.Property<int?>("CidadeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataNascimento")
@@ -82,7 +84,7 @@ namespace api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Cidade");
+                    b.HasIndex("CidadeId");
 
                     b.ToTable("pessoa");
                 });
@@ -129,7 +131,7 @@ namespace api.Migrations
                 {
                     b.HasOne("api.Model.Domain.Cidade", "Cidade")
                         .WithMany()
-                        .HasForeignKey("Cidade");
+                        .HasForeignKey("CidadeId");
 
                     b.Navigation("Cidade");
                 });

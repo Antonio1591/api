@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
 namespace api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221001173441_TableErrada")]
+    partial class TableErrada
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,6 +25,9 @@ namespace api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("Idade")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -31,16 +36,11 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("ResponsavelId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Situacao")
                         .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ResponsavelId");
 
                     b.ToTable("animais");
                 });
@@ -70,11 +70,14 @@ namespace api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("Cidade")
+                    b.Property<int?>("CidadeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataNascimento")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int>("Idade")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -82,7 +85,7 @@ namespace api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Cidade");
+                    b.HasIndex("CidadeId");
 
                     b.ToTable("pessoa");
                 });
@@ -116,20 +119,11 @@ namespace api.Migrations
                     b.ToTable("petshop");
                 });
 
-            modelBuilder.Entity("api.Model.Domain.Animais", b =>
-                {
-                    b.HasOne("api.Model.Domain.Pessoa", "Responsavel")
-                        .WithMany()
-                        .HasForeignKey("ResponsavelId");
-
-                    b.Navigation("Responsavel");
-                });
-
             modelBuilder.Entity("api.Model.Domain.Pessoa", b =>
                 {
                     b.HasOne("api.Model.Domain.Cidade", "Cidade")
                         .WithMany()
-                        .HasForeignKey("Cidade");
+                        .HasForeignKey("CidadeId");
 
                     b.Navigation("Cidade");
                 });

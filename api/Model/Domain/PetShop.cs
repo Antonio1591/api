@@ -1,8 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace api.Model
+namespace api.Model.Domain
 {
     public class PetShop
     {
@@ -14,6 +15,7 @@ namespace api.Model
         [Required]
         public string SituacaoAnimal { get; set; }
         [Required]
+        [TypeConverter("DATE")]
         public DateTime DataEntrada { get; set; }
         [Required]
         public decimal Valor { get; set; }

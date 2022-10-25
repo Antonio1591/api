@@ -1,4 +1,4 @@
-﻿using api.Model;
+﻿using api.Model.Domain;
 using Microsoft.EntityFrameworkCore;
 namespace api.Data
 {
@@ -8,6 +8,8 @@ namespace api.Data
         public DbSet<Pessoa> pessoa { get; set; }
         public DbSet<Animais> animais { get; set; }
         public DbSet<PetShop> petshop { get; set; }
+        public DbSet<Cidade> cidades { get; set; }
+
     }
 
 }

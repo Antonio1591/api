@@ -1,61 +1,66 @@
-﻿using api.Model;
-using api.Services;
+﻿using api.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Globalization;
+using api.Model.Domain;
+using api.Model.Input;
+using System.Diagnostics;
+using api.Model.View;
+using api.Model.Mapping;
 
 namespace api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PessoaController:ControllerBase
+    public class PessoaController : ControllerBase
     {
-        private readonly IPessoa _Ipessoa;
-        public PessoaController(IPessoa Ipessoa)
+        private readonly IPessoaService _IpessoaService;
+        public PessoaController(IPessoaService Ipessoa)
         {
-            _Ipessoa = Ipessoa;
+            _IpessoaService = Ipessoa;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Pessoa>> ListaPessoas()
+        public  IEnumerable<PessoaViewModel> ListaPessoas()
         {
-            return await _Ipessoa.ListaPessoas();
+            return  _IpessoaService.ListaPessoas();
         }
 
         [HttpGet("{Id}")]
 
-        public async Task<ActionResult<Pessoa>> Pessoa(int Id)
+        public async Task<ActionResult<PessoaViewModel>> Pessoa(int Id)
         {
-            return await _Ipessoa.Pessoa(Id);
+            return await _IpessoaService.ObterPorId(Id);
         }
 
         [HttpPost]
 
-        public async Task<ActionResult<Pessoa>> AdicionarPessoa([FromBody] Pessoa pessoa)
+        public async Task<ActionResult<Pessoa>> AdicionarPessoa([FromBody] PessoaInputModel input)
         {
-            var newPessoa = await _Ipessoa.Create(pessoa);
-            return CreatedAtAction(nameof(pessoa),new {newPessoa.Id},newPessoa);
+           var pessoa = await _IpessoaService.Create(input);
+
+            return CreatedAtAction(nameof(pessoa), new { pessoa.Id }, pessoa);
         }
-        
+
         [HttpDelete("{Id}")]
-        public async Task<ActionResult<Pessoa>>DeletePessoa(int Id)
+        public async Task<ActionResult<Pessoa>> DeletePessoa(int Id)
         {
-           var deletePessoa= _Ipessoa.Pessoa(Id);
+            var deletePessoa = _IpessoaService.ObterPorId(Id);
             if (deletePessoa == null)
                 NotFound();
 
-                await _Ipessoa.Delete(deletePessoa.Id);
+            await _IpessoaService.Delete(deletePessoa.Id);
             return NoContent();
         }
         [HttpPut]
-        public async Task<ActionResult<Pessoa>> AtualizarPessoa(int Id,[FromBody] Pessoa pessoa)
+        public async Task<ActionResult<Pessoa>> AtualizarPessoa(int Id, [FromBody] Pessoa pessoa)
         {
             if (Id != pessoa.Id)
                 return BadRequest();
 
-              await  _Ipessoa.Update(pessoa);
+            await _IpessoaService.Update(pessoa);
             return NoContent();
         }
     }

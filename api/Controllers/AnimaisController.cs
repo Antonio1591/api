@@ -1,5 +1,4 @@
-﻿using api.Model;
-using api.Services;
+﻿using api.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +6,9 @@ using System.Threading.Tasks;
 using System.Globalization;
 using api.Service;
 using Microsoft.EntityFrameworkCore.Migrations.Internal;
+using api.Model.Domain;
+using api.Model.View;
+using api.Model.Input;
 
 namespace api.Controllers
 {
@@ -22,30 +24,30 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Animais>> ListaAnimais()
+        public IEnumerable<AnimaisViewModel> ListaAnimais()
         {
-            return await _IAnimaisServices.ListaAnimais();
+            return  _IAnimaisServices.ListaAnimais();
         }
 
         [HttpGet("{Id}")]
 
-        public async Task<ActionResult<Animais>> Pessoa(int Id)
+        public async Task<ActionResult<AnimaisViewModel>> Pessoa(int Id)
         {
-            return await _IAnimaisServices.animal(Id);
+            return await _IAnimaisServices.Animal(Id);
         }
 
         [HttpPost]
 
-        public async Task<ActionResult<Animais>> AdicionarAnimais([FromBody] Animais animal)
+        public async Task<ActionResult<Animais>> AdicionarAnimais([FromBody] AnimaisInputModel animal)
         {
-            var newAnimais = await _IAnimaisServices.CreateAnimal(animal);
+            var newAnimais = await _IAnimaisServices.Create(animal);
             return CreatedAtAction(nameof(animal), new { newAnimais.Id }, newAnimais);
         }
 
         [HttpDelete("{Id}")]
         public async Task<ActionResult<Animais>> DeletaAnimal(int Id)
         {
-            var deletePessoa = _IAnimaisServices.animal(Id);
+            var deletePessoa = _IAnimaisServices.Animal(Id);
             if (deletePessoa == null)
                 NotFound();
 
@@ -53,12 +55,12 @@ namespace api.Controllers
             return NoContent();
         }
         [HttpPut]
-        public async Task<ActionResult<Animais>> AtualizarAnimal(int Id, [FromBody] Animais pessoa)
+        public async Task<ActionResult<Animais>> AtualizarAnimal(int Id, [FromBody] Animais animais)
         {
-            if (Id != pessoa.Id)
+            if (Id != animais.Id)
                 return BadRequest();
 
-            await _IAnimaisServices.Update(pessoa);
+            await _IAnimaisServices.Update(animais);
             return NoContent();
         }
 

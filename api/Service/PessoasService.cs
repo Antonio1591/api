@@ -1,25 +1,40 @@
 ﻿using api.Data;
-using api.Model;
+using api.Model.Domain;
+using api.Model.Input;
+using api.Model.Mapping;
+using api.Model.View;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace api.Services
 {
-    public class PessoasService:IPessoa
+    public class PessoasService : IPessoaService
     {
         public readonly DataContext _context;
-             
+
         public PessoasService(DataContext context)
         {
             _context = context;
         }
-        public async Task<Pessoa> Create(Pessoa pessoa)
+        public async Task<PessoaViewModel> Create(PessoaInputModel input)
         {
+            var cidade = await _context.cidades.FindAsync(input.Cidade.Id);
+
+            if (cidade == null) return null;
+
+            var pessoa = new Pessoa(input.Nome, input.DataNascimento, cidade);
+
+
             _context.pessoa.Add(pessoa);
+
             await _context.SaveChangesAsync();
 
-            return pessoa;
+            return pessoa.ParaViewModel();
         }
 
         public async Task Delete(int id)
@@ -29,14 +44,22 @@ namespace api.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Pessoa>> ListaPessoas()
+        public IEnumerable<PessoaViewModel> ListaPessoas()
         {
-            return await _context.pessoa.ToListAsync();
+            IEnumerable<PessoaViewModel> pessoas = _context.pessoa
+                .Include(p => p.Cidade).ToList()
+                .Select(p => p.ParaViewModel());
+            return pessoas;
+
         }
 
-        public async Task<Pessoa> Pessoa(int id)
+        public async Task<PessoaViewModel> ObterPorId(int id)
         {
-            return await _context.pessoa.FindAsync(id);
+            var dados = await _context.pessoa.FindAsync(id);
+            var cidade = await _context.cidades.FindAsync(dados.Cidade.Id);
+            if (cidade == null) return null;
+            dados.Cidade = cidade;
+            return dados.ParaViewModel();
         }
 
         public async Task Update(Pessoa pessoa)

@@ -13,9 +13,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using Microsoft.EntityFrameworkCore;
-using api.Model;
 using api.Services;
 using api.Service;
+using api.Model.Domain;
 
 namespace api
 {
@@ -36,10 +36,10 @@ namespace api
             string stringDeConexao = Configuration.GetConnectionString("conexaoMySQL");
 
             services.AddDbContext<DataContext>(opt => opt.UseMySql(stringDeConexao, ServerVersion.AutoDetect(stringDeConexao)));
-            services.AddTransient<IPessoa, PessoasService>();
-            services.AddTransient<IAnimaisServices, AnimaisService>();
-            services.AddTransient<PetShopService>();
-            services.AddTransient<Pessoa>();
+            services.AddScoped<IPessoaService, PessoasService>();
+            services.AddScoped<IAnimaisServices, AnimaisService>();
+            services.AddScoped<PetShopService>();
+
             //services.AddScoped<IPessoa, Pessoa>();
             services.AddControllers();
             services.AddSwaggerGen(c =>

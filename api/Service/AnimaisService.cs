@@ -1,8 +1,12 @@
 ﻿using api.Data;
-using api.Model;
+using api.Model.Domain;
+using api.Model.Input;
+using api.Model.Mapping;
+using api.Model.View;
 using api.Service;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 
@@ -16,12 +20,18 @@ namespace api.Services
         {
             _context = context;
         }
-        public async Task<Animais> CreateAnimal(Animais animal)
+        public async Task<AnimaisViewModel> Create(AnimaisInputModel imput)
         {
-            _context.animais.Add(animal);
+            Pessoa Responsavel = await _context.pessoa.FindAsync(imput.Responsavel.Id);
+            if (Responsavel == null) return null;
+            Responsavel.Cidade = await _context.cidades.FindAsync(Responsavel.Cidade.Id);
+            if(Responsavel.Cidade == null) return null;
+
+            var animais = new Animais(imput.Raca,imput.Nome,Responsavel,imput.Situacao);
+            _context.Add(animais);
             await _context.SaveChangesAsync();
 
-            return animal;
+            return animais.ParaViewModel();
         }
 
         public async Task Delete(int id)
@@ -31,14 +41,19 @@ namespace api.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Animais>> ListaAnimais()
+        public IEnumerable<AnimaisViewModel> ListaAnimais()
         {
-            return await _context.animais.ToListAsync();
+            IEnumerable<AnimaisViewModel> animais = _context.animais
+                .Include(p => p.Responsavel).ToList()
+                .Select(p => p.ParaViewModel());
+            return animais;
         }
 
-        public async Task<Animais> animal(int id)
+        public async Task<AnimaisViewModel> Animal(int id)
         {
-            return await _context.animais.FindAsync(id);
+            var animal= await _context.animais.FindAsync(id);
+            if (animal == null) return null;
+            return animal.ParaViewModel();
         }
 
         public async Task Update(Animais animal)

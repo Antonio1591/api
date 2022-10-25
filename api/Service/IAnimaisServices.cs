@@ -1,4 +1,7 @@
-﻿using api.Model;
+﻿using api.Model.Domain;
+using api.Model.Input;
+using api.Model.Mapping;
+using api.Model.View;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,11 +9,11 @@ namespace api.Service
 {
     public interface IAnimaisServices
     {
-        Task<IEnumerable<Animais>> ListaAnimais();
+        IEnumerable<AnimaisViewModel> ListaAnimais();
 
-        Task<Animais> animal(int Id);
+        Task<AnimaisViewModel> Animal(int Id);
 
-        Task<Animais> CreateAnimal(Animais animais);
+        Task<AnimaisViewModel> Create(AnimaisInputModel imput);
 
         Task Update(Animais animais);
 

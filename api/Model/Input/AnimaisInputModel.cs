@@ -1,16 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using api.Model.Domain;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace api.Model
+namespace api.Model.Input
 {
-    public class Animais
+    [NotMapped]
+    public class AnimaisInputModel
     {
+
         public int Id { get; set; }
         [Required]
         public string Raca { get; set; }
         [Required]
+
         public string Nome { get; set; }
         [Required]
-        public int Idade { get; set; }
+        public Pessoa Responsavel { get; set; }
+
         [Required]
         public string Situacao { get; set; }
     }
