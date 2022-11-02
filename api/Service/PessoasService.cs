@@ -52,7 +52,12 @@ namespace api.Services
             return pessoas;
 
         }
-
+        public IEnumerable<Pessoa> RetornaPessoa()
+        {
+            IEnumerable<Pessoa> pessoas = _context.pessoa
+                .Include(p => p.Cidade).ToList();
+            return pessoas;
+        }
         public async Task<PessoaViewModel> ObterPorId(int id)
         {
             var dados = await _context.pessoa.FindAsync(id);

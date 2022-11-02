@@ -11,6 +11,7 @@ namespace api.Services
         IEnumerable<PessoaViewModel> ListaPessoas();
 
         Task<PessoaViewModel> ObterPorId(int Id);
+        IEnumerable<Pessoa> RetornaPessoa();
 
         Task<PessoaViewModel> Create(PessoaInputModel input);
 

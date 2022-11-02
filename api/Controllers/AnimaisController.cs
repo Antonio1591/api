@@ -36,12 +36,12 @@ namespace api.Controllers
             return await _IAnimaisServices.Animal(Id);
         }
 
-        [HttpPost]
+        [HttpPost("Resultado")]
 
         public async Task<ActionResult<Animais>> AdicionarAnimais([FromBody] AnimaisInputModel animal)
         {
             var newAnimais = await _IAnimaisServices.Create(animal);
-            return CreatedAtAction(nameof(animal), new { newAnimais.Id }, newAnimais);
+            return CreatedAtAction(nameof(Animais), new { newAnimais.Id }, newAnimais);
         }
 
         [HttpDelete("{Id}")]

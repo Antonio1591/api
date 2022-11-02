@@ -1,14 +1,10 @@
 ﻿using api.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Globalization;
 using api.Model.Domain;
 using api.Model.Input;
-using System.Diagnostics;
 using api.Model.View;
-using api.Model.Mapping;
 
 namespace api.Controllers
 {
@@ -34,14 +30,21 @@ namespace api.Controllers
         {
             return await _IpessoaService.ObterPorId(Id);
         }
+        
+        [HttpGet("Busca")]
 
-        [HttpPost]
+        public IEnumerable<Pessoa> RetornaPessoa()
+        {
+            return _IpessoaService.RetornaPessoa();
+        }
+
+        [HttpPost("Resultado")]
 
         public async Task<ActionResult<Pessoa>> AdicionarPessoa([FromBody] PessoaInputModel input)
         {
            var pessoa = await _IpessoaService.Create(input);
 
-            return CreatedAtAction(nameof(pessoa), new { pessoa.Id }, pessoa);
+            return CreatedAtAction(nameof(Pessoa), new { pessoa.Id }, pessoa);
         }
 
         [HttpDelete("{Id}")]

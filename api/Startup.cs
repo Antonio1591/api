@@ -39,6 +39,7 @@ namespace api
             services.AddScoped<IPessoaService, PessoasService>();
             services.AddScoped<IAnimaisServices, AnimaisService>();
             services.AddScoped<PetShopService>();
+            services.AddScoped<ICidadeService, CidadeServices>();
 
             //services.AddScoped<IPessoa, Pessoa>();
             services.AddControllers();

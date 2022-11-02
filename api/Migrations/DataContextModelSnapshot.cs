@@ -8,7 +8,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    partial class 
+        DataContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -70,7 +71,7 @@ namespace api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("Cidade")
+                    b.Property<int?>("CidadeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataNascimento")
@@ -82,7 +83,7 @@ namespace api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Cidade");
+                    b.HasIndex("CidadeId");
 
                     b.ToTable("pessoa");
                 });
@@ -129,7 +130,7 @@ namespace api.Migrations
                 {
                     b.HasOne("api.Model.Domain.Cidade", "Cidade")
                         .WithMany()
-                        .HasForeignKey("Cidade");
+                        .HasForeignKey("CidadeId");
 
                     b.Navigation("Cidade");
                 });

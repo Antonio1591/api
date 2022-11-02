@@ -7,12 +7,13 @@ using api.Service;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 
 
 namespace api.Services
 {
-    public class AnimaisService:IAnimaisServices
+    public class AnimaisService : IAnimaisServices
     {
         public readonly DataContext _context;
 
@@ -22,15 +23,13 @@ namespace api.Services
         }
         public async Task<AnimaisViewModel> Create(AnimaisInputModel imput)
         {
-            Pessoa Responsavel = await _context.pessoa.FindAsync(imput.Responsavel.Id);
+            Pessoa Responsavel = await _context.pessoa
+                                .Include(p => p.Cidade)
+                                .FirstOrDefaultAsync(p => p.Id == imput.Responsavel.Id);
             if (Responsavel == null) return null;
-            Responsavel.Cidade = await _context.cidades.FindAsync(Responsavel.Cidade.Id);
-            if(Responsavel.Cidade == null) return null;
-
-            var animais = new Animais(imput.Raca,imput.Nome,Responsavel,imput.Situacao);
+            var animais = new Animais(imput.Raca, imput.Nome, Responsavel, imput.Situacao);
             _context.Add(animais);
             await _context.SaveChangesAsync();
-
             return animais.ParaViewModel();
         }
 
@@ -44,14 +43,15 @@ namespace api.Services
         public IEnumerable<AnimaisViewModel> ListaAnimais()
         {
             IEnumerable<AnimaisViewModel> animais = _context.animais
-                .Include(p => p.Responsavel).ToList()
+                .Include(p => p.Responsavel)
+                .Include(p => p.Responsavel.Cidade).ToList()
                 .Select(p => p.ParaViewModel());
             return animais;
         }
 
         public async Task<AnimaisViewModel> Animal(int id)
         {
-            var animal= await _context.animais.FindAsync(id);
+            var animal = await _context.animais.FindAsync(id);
             if (animal == null) return null;
             return animal.ParaViewModel();
         }

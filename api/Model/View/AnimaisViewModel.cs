@@ -14,7 +14,7 @@ namespace api.Model.View
 
         public string NomeResponsavel { get; set; }
         
-        public string ResponsavelCidade { get; set; }
+        public int ResponsavelCidade { get; set; }
         public string Situacao { get; set; }
     }
 }

@@ -14,8 +14,8 @@ namespace api.Model.Mapping
                 Id = animais.Id,
                 Raca = animais.Raca,
                 Nome = animais.Nome,
-                NomeResponsavel=animais.Responsavel.Nome,
-                ResponsavelCidade=animais.Responsavel.Cidade.ToString(),
+                NomeResponsavel= animais.Responsavel.Nome,
+                ResponsavelCidade= animais.Responsavel.Cidade.Id,
                 Situacao = animais.Situacao,
 
             };
