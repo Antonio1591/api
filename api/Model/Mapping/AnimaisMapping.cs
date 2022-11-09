@@ -16,6 +16,7 @@ namespace api.Model.Mapping
                 Nome = animais.Nome,
                 NomeResponsavel= animais.Responsavel.Nome,
                 ResponsavelCidade= animais.Responsavel.Cidade.Id,
+
                 Situacao = animais.Situacao,
 
             };
